@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 import { useAccount } from "wagmi";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api, Profile, Post } from "../../lib/api";
@@ -10,7 +10,7 @@ import { PostCard } from "../../components/PostCard";
 import { FollowButton } from "../../components/FollowButton";
 import { ProfileStats } from "../../components/ProfileStats";
 
-export default function ProfilePage() {
+function ProfileContent() {
   const { address } = useAccount();
   const searchParams = useSearchParams();
   const viewUser = searchParams.get("user");
@@ -427,5 +427,19 @@ export default function ProfilePage() {
         </div>
       )}
     </main>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={
+      <main className="max-w-4xl mx-auto px-4 py-10">
+        <div className="glass rounded-3xl p-6">
+          <p className="text-white/70">Loading profile...</p>
+        </div>
+      </main>
+    }>
+      <ProfileContent />
+    </Suspense>
   );
 }

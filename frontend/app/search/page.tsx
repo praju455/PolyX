@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useAccount } from "wagmi";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api, Profile } from "../../lib/api";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export default function SearchPage() {
+function SearchContent() {
   const { address } = useAccount();
   const [mounted, setMounted] = useState(false);
   const searchParams = useSearchParams();
@@ -116,6 +116,20 @@ export default function SearchPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={
+      <main className="max-w-4xl mx-auto px-4 py-10">
+        <div className="glass rounded-3xl p-6">
+          <p className="text-white/70">Loading...</p>
+        </div>
+      </main>
+    }>
+      <SearchContent />
+    </Suspense>
   );
 }
 

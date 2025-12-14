@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 import { useAccount } from "wagmi";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api, ChatMessage, Conversation, Profile } from "../../lib/api";
@@ -18,7 +18,7 @@ function formatTime(ts: number) {
   return date.toLocaleDateString();
 }
 
-export default function MessagingPage() {
+function MessagingContent() {
   const { address, isConnected } = useAccount();
   const [mounted, setMounted] = useState(false);
   const searchParams = useSearchParams();
@@ -853,5 +853,19 @@ function UserSearchForm({ currentUser }: { currentUser: string }) {
       </div>
       {error && <p className="text-xs text-red-400">{error}</p>}
     </form>
+  );
+}
+
+export default function MessagingPage() {
+  return (
+    <Suspense fallback={
+      <main className="max-w-6xl mx-auto px-4 py-10">
+        <div className="card p-6">
+          <p className="opacity-70">Loading...</p>
+        </div>
+      </main>
+    }>
+      <MessagingContent />
+    </Suspense>
   );
 }

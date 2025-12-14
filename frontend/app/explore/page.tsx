@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { api, Profile } from "../../lib/api";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-export default function ExplorePage() {
+function ExploreContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchInput, setSearchInput] = useState("");
@@ -160,5 +160,22 @@ function UserCard({ profile, index }: { profile: Profile; index: number }) {
         </div>
       </Link>
     </motion.div>
+  );
+}
+
+export default function ExplorePage() {
+  return (
+    <Suspense fallback={
+      <div className="max-w-6xl mx-auto">
+        <div className="card-3d p-8">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 bg-white/10 rounded w-1/3" />
+            <div className="h-12 bg-white/10 rounded" />
+          </div>
+        </div>
+      </div>
+    }>
+      <ExploreContent />
+    </Suspense>
   );
 }
