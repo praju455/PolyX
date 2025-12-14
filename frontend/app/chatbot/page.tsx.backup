@@ -1,0 +1,467 @@
+"use client";
+
+import { useState, useRef, useEffect } from "react";
+import { useAccount } from "wagmi";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { api } from "../../lib/api";
+import { motion, AnimatePresence } from "framer-motion";
+
+interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+  timestamp: number;
+}
+
+const CHATBOT_HANDLE = "@PolyXBot";
+
+const SUGGESTED_PROMPTS = [
+  { emoji: "🌟", text: "What is PolyX?", prompt: "What is PolyX and how does it work?" },
+  { emoji: "✍️", text: "How to create a post?", prompt: "How do I create a post on PolyX?" },
+  { emoji: "🌐", text: "Explain Web3 social media", prompt: "Can you explain what Web3 social media is and how it differs from traditional social media?" },
+  { emoji: "⚡", text: "What is Polygon?", prompt: "What is the Polygon network and why does PolyX use it?" },
+];
+
+export default function ChatbotPage() {
+  const { address, isConnected } = useAccount();
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // Load chat history
+  const { data: chatHistory, isError: historyError } = useQuery<ChatMessage[]>({
+    queryKey: ["chatbot-history", address],
+    queryFn: () => (address ? api.getChatbotHistory(address) : Promise.resolve([])),
+    enabled: !!address && isConnected && mounted,
+    retry: 1,
+  });
+
+  useEffect(() => {
+    if (chatHistory && chatHistory.length > 0) {
+      setMessages(chatHistory);
+    }
+  }, [chatHistory]);
+
+  const sendMessage = useMutation({
+    mutationFn: async (message: string) => {
+      if (!address) throw new Error("Connect wallet first");
+      setError(null);
+      const response = await api.chatWithBot(address, message);
+      return response;
+    },
+    onSuccess: (response) => {
+      const botMessage: ChatMessage = {
+        role: "assistant",
+        content: response.response,
+        timestamp: Date.now(),
+      };
+      setMessages((prev) => [...prev, botMessage]);
+      setIsLoading(false);
+      setError(null);
+    },
+    onError: (error) => {
+      const errorMessage = (error as Error).message || "Failed to send message";
+      setError(errorMessage);
+      setIsLoading(false);
+
+      // Remove the user message that failed
+      setMessages((prev) => prev.slice(0, -1));
+    },
+  });
+
+  const handleSend = async (messageText?: string) => {
+    const textToSend = messageText || input.trim();
+    if (!textToSend || isLoading || !address) return;
+
+    setIsLoading(true);
+    setInput("");
+    setError(null);
+
+    // Reset textarea height
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+
+    // Add user message immediately
+    const userMessage: ChatMessage = {
+      role: "user",
+      content: textToSend,
+      timestamp: Date.now(),
+    };
+    setMessages((prev) => [...prev, userMessage]);
+
+    // Send to bot
+    sendMessage.mutate(textToSend);
+  };
+
+  const handlePromptClick = (prompt: string) => {
+    if (isLoading) return;
+    handleSend(prompt);
+  };
+
+  const copyToClipboard = async (text: string, index: number) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+
+  if (!mounted) {
+    return (
+      <div className="max-w-5xl mx-auto">
+        <div className="card-3d p-12 text-center space-y-4">
+          <div className="animate-pulse">
+            <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl mx-auto mb-4"></div>
+            <div className="h-4 bg-slate-700 rounded w-48 mx-auto"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isConnected || !address) {
+    return (
+      <div className="max-w-5xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="card-3d p-12 text-center space-y-6"
+        >
+          <motion.div
+            className="text-7xl mb-6"
+            animate={{
+              scale: [1, 1.1, 1],
+              rotate: [0, 5, -5, 0]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatDelay: 1
+            }}
+          >
+            🤖
+          </motion.div>
+          <h1 className="text-4xl font-bold gradient-text">PolyX AI Assistant</h1>
+          <p className="text-gray-400 text-lg max-w-md mx-auto">
+            Connect your wallet to start chatting with our AI-powered assistant
+          </p>
+          <div className="pt-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-500/10 border border-indigo-500/30 rounded-full text-sm text-indigo-300">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+              </span>
+              Powered by Gemini AI
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full min-h-screen flex flex-col">
+      <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col gap-4 p-4 md:p-6">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="card-3d p-4 md:p-6 flex-shrink-0"
+        >
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-3 md:gap-4">
+              <div className="relative">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-2xl md:text-3xl shadow-lg shadow-indigo-500/50">
+                  🤖
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-green-500 border-2 border-slate-900 rounded-full"></div>
+              </div>
+              <div>
+                <h1 className="text-xl md:text-2xl font-bold gradient-text">PolyX AI Assistant</h1>
+                <p className="text-gray-400 text-xs md:text-sm">Powered by Gemini • Always here to help</p>
+                <p className="text-gray-500 text-xs mt-1 flex items-center gap-1">
+                  <span>💡</span>
+                  Tag <span className="text-indigo-400 font-mono font-semibold">{CHATBOT_HANDLE}</span> in posts for AI responses
+                </p>
+              </div>
+            </div>
+            {messages.length > 0 && (
+              <button
+                onClick={async () => {
+                  if (!address) return;
+                  if (!confirm("Clear all chat history?")) return;
+                  try {
+                    await api.clearChatbotHistory(address);
+                    setMessages([]);
+                    setError(null);
+                    queryClient.invalidateQueries({ queryKey: ["chatbot-history", address] });
+                  } catch (error) {
+                    setError((error as Error).message || "Failed to clear chat");
+                  }
+                }}
+                className="px-3 py-2 md:px-4 md:py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-xl text-xs md:text-sm font-medium transition-all border border-red-500/30 hover:scale-105 transform"
+              >
+                🗑️ Clear Chat
+              </button>
+            )}
+          </div>
+        </motion.div>
+
+        {/* Error Banner */}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="card-3d p-4 bg-red-500/10 border border-red-500/30 flex-shrink-0"
+            >
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">⚠️</span>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-red-300 mb-1">Connection Error</h3>
+                  <p className="text-sm text-red-200/80">{error}</p>
+                  <p className="text-xs text-red-200/60 mt-2">
+                    Make sure the backend server is running on port 3001
+                  </p>
+                </div>
+                <button
+                  onClick={() => setError(null)}
+                  className="text-red-300 hover:text-red-100 transition-colors"
+                >
+                  ✕
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Messages Container - Full Height with Scrolling */}
+        <div className="card-3d flex-1 flex flex-col overflow-hidden min-h-0">
+          <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4" style={{
+            scrollBehavior: 'smooth',
+            overscrollBehavior: 'contain'
+          }}>
+            {messages.length === 0 ? (
+              <div className="text-center py-8 space-y-6">
+                <motion.div
+                  className="text-7xl mb-4"
+                  animate={{
+                    y: [0, -10, 0],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  👋
+                </motion.div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-2">Welcome! How can I help you today?</h3>
+                  <p className="text-gray-400">
+                    I can answer questions about PolyX, Web3, blockchain, and more
+                  </p>
+                </div>
+
+                {/* Suggested Prompts */}
+                <div className="max-w-2xl mx-auto">
+                  <p className="text-sm text-gray-500 mb-3 font-medium">✨ Try asking:</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {SUGGESTED_PROMPTS.map((item, idx) => (
+                      <motion.button
+                        key={idx}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        onClick={() => handlePromptClick(item.prompt)}
+                        disabled={isLoading}
+                        className="group p-4 bg-gradient-to-br from-slate-800/50 to-slate-700/30 hover:from-indigo-500/20 hover:to-purple-500/20 border border-indigo-500/20 hover:border-indigo-500/40 rounded-xl text-left transition-all hover:scale-105 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl group-hover:scale-110 transition-transform">{item.emoji}</span>
+                          <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">
+                            {item.text}
+                          </span>
+                        </div>
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-4 space-y-2 text-sm text-gray-500">
+                  <p className="flex items-center justify-center gap-2">
+                    <span>💡</span>
+                    <span><strong>Pro Tip:</strong> Tag {CHATBOT_HANDLE} in posts to get AI responses!</span>
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <AnimatePresence mode="popLayout">
+                {messages.map((msg, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                  >
+                    <div
+                      className={`group max-w-[85%] md:max-w-[75%] rounded-2xl p-4 shadow-lg ${msg.role === "user"
+                        ? "bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-indigo-500/30"
+                        : "bg-gradient-to-br from-slate-800/80 to-slate-700/50 text-white border border-indigo-500/20 shadow-slate-900/50"
+                        }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        {msg.role === "assistant" && (
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-sm flex-shrink-0 shadow-lg">
+                            🤖
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="whitespace-pre-wrap break-words leading-relaxed">{msg.content}</p>
+                          <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/10">
+                            <p className="text-xs opacity-60">
+                              {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                            {msg.role === "assistant" && (
+                              <button
+                                onClick={() => copyToClipboard(msg.content, idx)}
+                                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs px-2 py-1 bg-white/10 hover:bg-white/20 rounded-lg flex items-center gap-1"
+                              >
+                                {copiedIndex === idx ? (
+                                  <>
+                                    <span>✓</span>
+                                    <span>Copied</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span>📋</span>
+                                    <span>Copy</span>
+                                  </>
+                                )}
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                        {msg.role === "user" && (
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-sm flex-shrink-0 shadow-lg">
+                            👤
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            )}
+
+            {/* Typing Indicator */}
+            {isLoading && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex justify-start"
+              >
+                <div className="bg-gradient-to-br from-slate-800/80 to-slate-700/50 rounded-2xl p-4 border border-indigo-500/20 shadow-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                      🤖
+                    </div>
+                    <div className="flex gap-1.5">
+                      <div className="w-2.5 h-2.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                      <div className="w-2.5 h-2.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                      <div className="w-2.5 h-2.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    </div>
+                    <span className="text-sm text-gray-400">Thinking...</span>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input Area */}
+          <div className="p-4 border-t border-indigo-500/20 bg-gradient-to-b from-slate-800/30 to-slate-900/50">
+            <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex gap-3">
+              <div className="flex-1 relative">
+                <textarea
+                  ref={textareaRef}
+                  value={input}
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                    e.target.style.height = "auto";
+                    e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`;
+                  }}
+                  placeholder="Type your message... (Shift+Enter for new line)"
+                  className="w-full bg-slate-700/50 border border-indigo-500/30 rounded-xl px-4 py-3 pr-12 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all resize-none"
+                  disabled={isLoading}
+                  rows={1}
+                  style={{ maxHeight: "120px" }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      if (input.trim() && !isLoading) {
+                        handleSend();
+                      }
+                    }
+                  }}
+                />
+                <div className="absolute right-3 bottom-3 text-xs text-gray-500">
+                  {input.length}/1000
+                </div>
+              </div>
+              <button
+                type="submit"
+                disabled={!input.trim() || isLoading || input.length > 1000}
+                className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl hover:shadow-indigo-500/50 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none flex items-center gap-2 self-end"
+              >
+                {isLoading ? (
+                  <>
+                    <motion.span
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    >
+                      ⏳
+                    </motion.span>
+                    <span className="hidden sm:inline">Sending...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>➤</span>
+                    <span className="hidden sm:inline">Send</span>
+                  </>
+                )}
+              </button>
+            </form>
+            <p className="text-xs text-gray-500 mt-2 text-center">
+              Press <kbd className="px-1.5 py-0.5 bg-slate-700 rounded border border-slate-600">Enter</kbd> to send • <kbd className="px-1.5 py-0.5 bg-slate-700 rounded border border-slate-600">Shift</kbd> + <kbd className="px-1.5 py-0.5 bg-slate-700 rounded border border-slate-600">Enter</kbd> for new line
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  );
+}
