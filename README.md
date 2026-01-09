@@ -1,471 +1,485 @@
-# PolyX – Gasless, On-Chain Social Network on Polygon
+# PolyX – Gasless, On-Chain Social Network
 
-A modern, decentralized Twitter/X clone where all core actions (post, like, retweet, quote, comment, follow) are recorded on-chain. Users never pay gas; a backend relayer with a sponsor wallet signs and sends every transaction.
+<div align="center">
 
-## 🌟 Features
+![Blockchain](https://img.shields.io/badge/Blockchain-Polygon-purple?logo=polygon&logoColor=white&style=for-the-badge)
+![Network](https://img.shields.io/badge/Network-Amoy%20Testnet-blue?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Active%20Development-orange?style=for-the-badge)
 
-### ✅ Implemented Features
+![Smart Contracts](https://img.shields.io/badge/Smart%20Contracts-Solidity-navy?logo=ethereum&logoColor=white&style=flat-square)
+![Frontend](https://img.shields.io/badge/Frontend-Next.js-black?logo=nextjs&logoColor=white&style=flat-square)
+![Backend](https://img.shields.io/badge/Backend-Node.js-green?logo=nodejs&logoColor=white&style=flat-square)
+![Database](https://img.shields.io/badge/Database-Supabase-emerald?logo=supabase&logoColor=white&style=flat-square)
 
-#### Core Social Features
-- ✅ **Posts & Tweets** - Create and share posts (280 character limit)
-- ✅ **Likes** - Like posts with real-time count updates
-- ✅ **Retweets** - Retweet posts (with unretweet support)
-- ✅ **Quote Tweets** - Quote posts with your own commentary
-- ✅ **Comments** - Comment on posts with threaded replies
-- ✅ **Follow/Unfollow** - Follow users and see their posts in your feed
-- ✅ **Profile Pages** - Customizable profiles with avatars, headers, and bios
-- ✅ **Feed Modes** - View all posts or filter to following-only
-- ✅ **User Discovery** - Explore and search for users
-- ✅ **Notifications** - Real-time notifications for likes, comments, quotes, retweets, and follows
+[🌐 Website](#) • [📖 Documentation](#) • [🐛 Issues](https://github.com) • [💬 Discord](#)
 
-#### Messaging Features
-- ✅ **Direct Messaging** - WhatsApp-style messaging between users
-- ✅ **Read Receipts** - Blue ticks to show when messages are read
-- ✅ **Message Deletion** - Delete messages for yourself or everyone
-- ✅ **Block Users** - Block users from messaging and seeing your content
-- ✅ **Clear Chat** - Clear entire conversation history
-- ✅ **Multi-select** - Select multiple messages for bulk actions
+---
 
-#### AI Chatbot
-- ✅ **AI Assistant** - Integrated Gemini AI chatbot
-- ✅ **Mention Responses** - Bot responds to @PolyXBot mentions in posts/comments
-- ✅ **Chat History** - Persistent chat history per user
-- ✅ **Direct Chat** - Chat directly with the AI assistant
+**A decentralized social network where conversations live on-chain and gas is always free.**
 
-#### User Experience
-- ✅ **Modern 3D UI** - Clean, modern interface with glassmorphism effects
-- ✅ **Wallet Connection** - Support for MetaMask, Rainbow, Coinbase Wallet, Trust, Zerion, Ledger via WalletConnect/RainbowKit
-- ✅ **Responsive Design** - Works on desktop and mobile
-- ✅ **Dark Theme** - Beautiful dark theme with gradient accents
-- ✅ **Real-time Updates** - Automatic refresh of feeds and counts
+PolyX is a modern Twitter/X alternative built on Polygon. Create posts, like, retweet, quote, comment, and follow users—all with zero gas fees thanks to our gasless relayer architecture.
 
-#### Data Storage
-- ✅ **On-Chain Storage** - Core social graph stored on blockchain
-- ✅ **Supabase Integration** - Fast queries for messages, followers, and blocked users
-- ✅ **IPFS/Pinata** - Media storage for images and avatars
-- ✅ **Hybrid Architecture** - Best of both worlds (on-chain + off-chain)
+</div>
+
+---
+
+## 🎯 Overview
+
+PolyX combines the social experience you know with the transparency and ownership of Web3. Every action is recorded immutably on the Polygon blockchain, while our relayer network ensures you never pay a cent in gas fees.
+
+Built with **Next.js**, **Hardhat**, **Wagmi**, and **Supabase**, PolyX demonstrates how to scale a decentralized application with performance-first architecture.
+
+---
+
+## ✨ Core Features
+
+### 🗣️ Social Features
+
+- **Posts & Tweets** – Share thoughts with a 280-character limit
+- **Likes & Interactions** – Like posts with real-time count updates
+- **Retweets & Quotes** – Amplify or comment on posts
+- **Comments & Threads** – Build threaded conversations
+- **Follow System** – Build your audience and customize your feed
+- **User Profiles** – Customizable with avatars, headers, and bios
+- **Smart Feed** – View all posts or filter to following-only
+- **User Discovery** – Explore and search for creators
+
+### 💬 Messaging
+
+- **Direct Messages** – WhatsApp-style messaging between users
+- **Read Receipts** – Blue ticks show when messages are read
+- **Message Management** – Delete for yourself or everyone
+- **Block Feature** – Block users from contacting and viewing your content
+- **Bulk Actions** – Multi-select messages for batch operations
+
+### 🤖 AI Integration
+
+- **AI Chatbot** – Powered by Google Gemini
+- **Mention Responses** – Bot responds to @PolyXBot mentions
+- **Persistent History** – Keep your chat history across sessions
+- **Direct Chat** – Talk with the AI assistant anytime
+
+### 🎨 User Experience
+
+- **Modern 3D Design** – Glassmorphism effects and smooth animations
+- **Multi-Wallet Support** – MetaMask, Rainbow, Coinbase, Trust, Zerion, Ledger
+- **Fully Responsive** – Seamless experience on desktop and mobile
+- **Dark Theme** – Beautiful dark UI with gradient accents
+- **Real-time Updates** – Instant feed and notification refresh
+
+---
+
+## 🛠️ Technical Architecture
+
+### Frontend Stack
+
+- **Next.js 14** – React framework with App Router
+- **TypeScript** – Type-safe development
+- **Tailwind CSS** – Utility-first styling
+- **Wagmi + Viem** – Ethereum React hooks and SDK
+- **RainbowKit** – Universal wallet connection UI
+- **React Query** – Server state management
+
+### Backend Stack
+
+- **Node.js + Express** – RESTful API server
+- **TypeScript** – Type-safe backend
+- **Hardhat** – Smart contract toolkit
+- **Supabase** – PostgreSQL database for fast queries
+- **Pinata** – IPFS integration for media
+- **Google Gemini** – AI chatbot engine
+
+### Blockchain
+
+- **Smart Contracts** – Solidity on Polygon
+- **Gasless Architecture** – Relayer pattern with sponsor wallet
+- **Hybrid Storage** – On-chain social graph + off-chain fast queries
+
+---
+
+## 📋 Implementation Status
+
+### ✅ Completed Features
+
+| Category | Features |
+|----------|----------|
+| **Posts** | Create, read, delete, edit posts |
+| **Interactions** | Like, retweet, quote, comment |
+| **Social Graph** | Follow/unfollow users, view followers |
+| **Profiles** | Custom profiles with avatars and bios |
+| **Messaging** | DMs, read receipts, blocking, bulk delete |
+| **AI Chatbot** | Gemini integration, mention responses, history |
+| **Storage** | On-chain smart contracts + Supabase + IPFS |
+| **Wallets** | WalletConnect, RainbowKit, multi-wallet support |
+| **UI/UX** | Modern design, responsive, dark theme |
 
 ### 🚧 Planned Features
 
-#### Short-term (Next Release)
-- [ ] **Media Posts** - Upload images/videos to posts
-- [ ] **Hashtags** - Tag posts with hashtags
-- [ ] **Mentions** - @mention users in posts
-- [ ] **Post Search** - Search posts by content
-- [ ] **Advanced Filters** - Filter feed by date, author, type
-- [ ] **Post Bookmarks** - Save posts for later
-- [ ] **Share Posts** - Share posts externally
-- [ ] **Rich Text Editor** - Formatting options for posts
+**Short-term:**
+- Media uploads (images/videos)
+- Hashtags and mentions
+- Post search and advanced filters
+- Bookmarks and sharing
 
-#### Medium-term
-- [ ] **Groups/Communities** - Create and join communities
-- [ ] **NFT Profile Pictures** - Use NFTs as profile pictures
-- [ ] **Token Gating** - Exclusive content for token holders
-- [ ] **Tip Posts** - Send tokens to creators
-- [ ] **Reputation System** - User reputation scores
-- [ ] **Moderation Tools** - Community moderation features
-- [ ] **Analytics Dashboard** - Post and profile analytics
-- [ ] **Export Data** - Download your data
+**Medium-term:**
+- Communities and groups
+- NFT profile pictures
+- Token tipping system
+- Reputation scores
+- Analytics dashboard
 
-#### Long-term
-- [ ] **Multi-chain Support** - Deploy on multiple chains
-- [ ] **Layer 2 Migration** - Optimize for lower costs
-- [ ] **Decentralized Storage** - Full IPFS integration
-- [ ] **Mobile Apps** - Native iOS and Android apps
-- [ ] **Video Streaming** - Live video features
-- [ ] **Audio Posts** - Voice messages and podcasts
-- [ ] **Marketplace** - Buy/sell posts as NFTs
-- [ ] **DAO Governance** - Community governance features
+**Long-term:**
+- Multi-chain support (Base, Arbitrum, Optimism)
+- Native mobile apps
+- Live streaming
+- Post marketplace
+- DAO governance
 
-## 🌐 Supported Networks
+---
 
-### Currently Deployed
-- **Polygon Amoy Testnet** - Primary testnet for development
-  - RPC: `https://polygon-amoy.g.alchemy.com/v2/YOUR_KEY`
-  - Explorer: https://amoy.polygonscan.com
-  - Faucet: https://faucet.polygon.technology/
+## 🌐 Network Support
 
-### Planned Deployments
+### Current Deployment
 
-#### Testnets
-- **Polygon Mumbai** - Alternative testnet
-- **Base Sepolia** - Base testnet
-- **Arbitrum Sepolia** - Arbitrum testnet
-- **Optimism Sepolia** - Optimism testnet
+**Polygon Amoy Testnet** (Development)
+- Chain ID: 80002
+- RPC: `https://polygon-amoy.g.alchemy.com/v2/YOUR_KEY`
+- Explorer: https://amoy.polygonscan.com
+- Faucet: https://faucet.polygon.technology/
 
-#### Mainnets
-- **Polygon Mainnet** - Primary mainnet deployment
-  - Lower gas costs than Ethereum
-  - Fast transactions
-  - Large ecosystem
-- **Base Mainnet** - Coinbase's L2
-  - Very low fees
-  - Growing ecosystem
-- **Arbitrum One** - Ethereum L2
-  - Low fees
-  - EVM compatible
-- **Optimism** - Ethereum L2
-  - Low fees
-  - Fast transactions
+### Planned Mainnet Deployments
 
-## 📋 Contract Addresses
+- **Polygon Mainnet** – Primary production network
+- **Base Mainnet** – Coinbase's L2 solution
+- **Arbitrum One** – Ethereum L2 with low fees
+- **Optimism** – Ethereum L2 with fast transactions
 
-### Polygon Amoy Testnet (Current - Development)
+---
 
-**PolyX Contract:**
-```
-Address: 0x[YOUR_CONTRACT_ADDRESS]
-Explorer: https://amoy.polygonscan.com/address/0x[YOUR_CONTRACT_ADDRESS]
-Network: Polygon Amoy Testnet
-Chain ID: 80002
-RPC: https://polygon-amoy.g.alchemy.com/v2/YOUR_KEY
-```
-
-**Chatbot Address (Optional):**
-```
-Address: 0x[YOUR_CHATBOT_ADDRESS]
-```
-
-> **Note:** Replace `[YOUR_CONTRACT_ADDRESS]` with your deployed contract address after deployment. See deployment instructions below.
-
-### Future Deployments
-
-#### Polygon Mainnet (Planned)
-```
-Network: Polygon Mainnet
-Chain ID: 137
-RPC: https://polygon-rpc.com
-Explorer: https://polygonscan.com
-Status: Planned for v1.2
-```
-
-#### Base Mainnet (Planned)
-```
-Network: Base Mainnet
-Chain ID: 8453
-RPC: https://mainnet.base.org
-Explorer: https://basescan.org
-Status: Planned for v1.3
-```
-
-#### Arbitrum One (Planned)
-```
-Network: Arbitrum One
-Chain ID: 42161
-RPC: https://arb1.arbitrum.io/rpc
-Explorer: https://arbiscan.io
-Status: Planned for v1.4
-```
-
-#### Optimism (Planned)
-```
-Network: Optimism
-Chain ID: 10
-RPC: https://mainnet.optimism.io
-Explorer: https://optimistic.etherscan.io
-Status: Planned for v1.5
-```
-
-### How to Deploy Contracts
-
-1. **Setup Environment:**
-   ```bash
-   cd contracts
-   cp env.example .env
-   # Fill in AMOY_RPC_URL and DEPLOYER_PRIVATE_KEY
-   ```
-
-2. **Deploy:**
-   ```bash
-   npx hardhat compile
-   npx hardhat run scripts/deploy.ts --network amoy
-   ```
-
-3. **Copy Contract Address:**
-   - The deployment script will print the contract address
-   - Copy it to your backend `.env` file as `POLYX_CONTRACT_ADDRESS`
-
-## 📁 Directory Structure
+## 📦 Project Structure
 
 ```
 PolyX/
-├── contracts/              # Smart contracts
-│   ├── contracts/
-│   │   └── PolyX.sol      # Main social contract
-│   ├── scripts/
-│   │   └── deploy.ts      # Deployment script
-│   ├── hardhat.config.ts  # Hardhat configuration
-│   ├── package.json
-│   └── env.example        # Contract deployment config
+├── contracts/                      # Smart Contracts
+│   ├── contracts/PolyX.sol        # Main social contract
+│   ├── scripts/deploy.ts          # Deployment automation
+│   └── hardhat.config.ts          # Hardhat configuration
 │
-├── backend/                # Node.js/Express relayer
+├── backend/                        # Node.js Relayer & API
 │   ├── src/
-│   │   ├── index.ts       # Express server + API routes
-│   │   ├── contract.ts    # Contract bindings & interactions
-│   │   ├── supabase.ts    # Supabase client & functions
-│   │   ├── chatbot.ts     # Gemini AI integration
-│   │   └── types.ts       # TypeScript types
-│   ├── scripts/
-│   │   └── get-address.js # Helper script
-│   ├── supabase-schema-clean.sql      # Messages & blocked users schema
-│   ├── supabase-followers-schema.sql  # Followers/following schema
-│   ├── README-SUPABASE-SETUP.md      # Supabase setup guide
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── env.example        # Backend environment variables
+│   │   ├── index.ts               # Express server
+│   │   ├── contract.ts            # Contract interactions
+│   │   ├── supabase.ts            # Database client
+│   │   ├── chatbot.ts             # AI integration
+│   │   └── types.ts               # TypeScript definitions
+│   ├── supabase-schema-*.sql      # Database schemas
+│   └── .env.example               # Configuration template
 │
-└── frontend/               # Next.js frontend
-    ├── app/                # Next.js App Router
-    │   ├── page.tsx       # Home/Feed page
-    │   ├── explore/        # User discovery
-    │   ├── notifications/  # Notifications page
-    │   ├── messaging/      # Direct messaging
-    │   ├── chatbot/        # AI chatbot
-    │   ├── profile/        # User profiles
-    │   ├── settings/       # Profile settings
-    │   ├── search/         # User search
-    │   └── layout.tsx     # Root layout with sidebar
-    ├── components/
-    │   ├── Sidebar.tsx    # Left navigation sidebar
-    │   ├── Footer.tsx     # Site footer
-    │   ├── PostCard.tsx   # Post display component
-    │   ├── Composer.tsx   # Post creation component
-    │   ├── Feed.tsx       # Feed display component
-    │   ├── FollowButton.tsx # Follow/unfollow button
-    │   ├── ProfileStats.tsx # Follower/following stats
-    │   ├── OnboardingGate.tsx # Profile creation gate
-    │   └── Providers.tsx   # React Query & Wagmi providers
-    ├── lib/
-    │   └── api.ts         # Backend API client
-    ├── render.yaml        # Render deployment configuration
-    ├── package.json
-    ├── tailwind.config.js
-    ├── postcss.config.js
-    └── env.example        # Frontend environment variables
+└── frontend/                       # Next.js Application
+    ├── app/                       # App Router pages
+    │   ├── page.tsx               # Home/Feed
+    │   ├── explore/               # User discovery
+    │   ├── messaging/             # Direct messages
+    │   ├── notifications/         # Alerts & updates
+    │   ├── chatbot/               # AI chat interface
+    │   ├── profile/               # User profiles
+    │   └── settings/              # Profile settings
+    ├── components/                # React components
+    ├── lib/api.ts                 # Backend client
+    └── .env.example               # Configuration template
 ```
 
-## 🚀 Quick Start
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+
-- pnpm (recommended) or npm/yarn
-- Polygon Amoy RPC URL (e.g., Alchemy/Infura/Ankr)
-- A funded Amoy account for deployer/sponsor (0.1 test MATIC is plenty)
-- WalletConnect Cloud project ID (for universal wallet connections)
-- Supabase account (for messages and followers)
-- Pinata account (for media storage)
-- Google Gemini API key (for chatbot - optional)
 
-### 1. Install Dependencies
+Before you begin, ensure you have:
+
+- **Node.js 18+** – JavaScript runtime
+- **pnpm** (recommended) or npm/yarn – Package manager
+- **Polygon Amoy RPC URL** – From Alchemy, Infura, or Ankr
+- **Funded Amoy Wallet** – For deployment and relaying (0.1 test MATIC)
+- **WalletConnect Project ID** – From https://cloud.walletconnect.com
+- **Supabase Account** – Free tier at https://supabase.com
+- **Pinata Account** – For IPFS pinning at https://pinata.cloud
+- **Google Gemini API Key** – Optional, for chatbot features
+
+### Step 1: Clone & Install
 
 ```bash
-# Install all dependencies
+git clone https://github.com/yourusername/polyx.git
+cd polyx
+
+# Install dependencies for all packages
 pnpm install --filter ./contracts --filter ./backend --filter ./frontend
 ```
 
-### 2. Deploy Contracts
+### Step 2: Deploy Smart Contracts
 
 ```bash
 cd contracts
 cp env.example .env
-# Fill in: AMOY_RPC_URL, DEPLOYER_PRIVATE_KEY
+
+# Edit .env with your values:
+# AMOY_RPC_URL=https://polygon-amoy.g.alchemy.com/v2/YOUR_KEY
+# DEPLOYER_PRIVATE_KEY=your_private_key
+
 pnpm install
 npx hardhat compile
 npx hardhat run scripts/deploy.ts --network amoy
-# Copy the printed contract address
+
+# Copy the printed contract address for next step
 ```
 
-### 3. Setup Supabase
+### Step 3: Setup Supabase
 
-1. Create a Supabase project at https://supabase.com
-2. Go to SQL Editor and run:
-   - `backend/supabase-schema-clean.sql` (for messages & blocked users)
-   - `backend/supabase-followers-schema.sql` (for followers/following)
-3. Copy your Supabase URL and anon key
+1. Go to https://supabase.com and create a new project
+2. In the SQL Editor, run the migration files:
+   - `backend/supabase-schema-clean.sql`
+   - `backend/supabase-followers-schema.sql`
+3. Copy your Supabase URL and anon key from Project Settings
 
-### 4. Configure Backend
+### Step 4: Configure & Run Backend
 
 ```bash
 cd ../backend
 cp env.example .env
-# Fill in:
-# - AMOY_RPC_URL
-# - SPONSOR_PRIVATE_KEY (funded Amoy wallet)
-# - POLYX_CONTRACT_ADDRESS (from step 2)
-# - SUPABASE_URL
-# - SUPABASE_ANON_KEY
-# - PINATA_JWT
-# - GEMINI_API_KEY (optional, for chatbot)
-# - CHATBOT_ADDRESS (optional, for mention responses)
-# - PORT (default: 3001)
+
+# Edit .env with your values:
+# AMOY_RPC_URL=your_rpc_url
+# SPONSOR_PRIVATE_KEY=funded_wallet_private_key
+# POLYX_CONTRACT_ADDRESS=0x... (from Step 2)
+# SUPABASE_URL=your_supabase_url
+# SUPABASE_ANON_KEY=your_anon_key
+# PINATA_JWT=your_pinata_jwt
+# GEMINI_API_KEY=your_gemini_key (optional)
+# PORT=3001
+
 pnpm install
 pnpm dev
 ```
 
-### 5. Configure Frontend
+### Step 5: Configure & Run Frontend
 
 ```bash
 cd ../frontend
 cp env.example .env.local
-# Fill in:
-# - NEXT_PUBLIC_BACKEND_URL (e.g., http://localhost:3001)
-# - NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
-# - NEXT_PUBLIC_PINATA_GATEWAY (optional, defaults to Pinata)
+
+# Edit .env.local with your values:
+# NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
+# NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
+# NEXT_PUBLIC_PINATA_GATEWAY=https://gateway.pinata.cloud
+
 pnpm install
 pnpm dev
 ```
 
-### 6. Open the App
+### Step 6: Launch
 
-Navigate to `http://localhost:3000` and connect your wallet!
+Open **http://localhost:3000** in your browser and connect your wallet!
 
-## 🚀 Deployment
+---
 
-### Render Deployment (Recommended)
-
-Deploy both frontend and backend to Render in one go!
-
-**Quick Start:**
-1. Push your code to GitHub
-2. Go to [dashboard.render.com](https://dashboard.render.com)
-3. Click **New +** → **Blueprint**
-4. Connect your repository (Render will detect `render.yaml`)
-5. Set environment variables for both services
-6. Deploy!
-
-**Or Manual Setup:**
-- See [RENDER_DEPLOYMENT.md](./RENDER_DEPLOYMENT.md) for detailed step-by-step instructions
-- See [RENDER_QUICK_START.md](./RENDER_QUICK_START.md) for a 5-minute quick guide
-
-**Deployment Options:**
-
-**Option 1: Render (Recommended)**
-- ✅ Easy setup with Blueprint
-- ✅ Automatic deployments
-- ✅ Free tier available (services sleep after 15 min)
-- ✅ Starter plan: $7/month per service (no sleep)
-- See [RENDER_DEPLOYMENT.md](./RENDER_DEPLOYMENT.md)
-
-**Option 2: Railway**
-```bash
-# Install Railway CLI
-npm i -g @railway/cli
-
-# Login and deploy
-railway login
-railway init
-railway up
-```
-
-**Option 3: Other Platforms**
-- Vercel (frontend only, serverless functions)
-- Heroku (paid plans)
-- DigitalOcean App Platform
-- AWS/GCP/Azure
-
-## 🔧 Backend API Endpoints
+## 🔌 API Reference
 
 ### Posts
-- `POST /api/tweet` - Create a post
-- `GET /api/feed` - Get feed (all posts)
-- `GET /api/post/:id` - Get post details
-- `GET /api/posts/author/:author` - Get posts by author
-- `DELETE /api/post/:id` - Delete a post
-- `PUT /api/post/:id` - Edit a post
+
+```
+POST   /api/tweet              Create a new post
+GET    /api/feed               Get feed (all posts or following)
+GET    /api/post/:id           Get post details
+GET    /api/posts/author/:author  Get posts by author
+DELETE /api/post/:id           Delete a post
+PUT    /api/post/:id           Edit a post
+```
 
 ### Interactions
-- `POST /api/like` - Like a post
-- `POST /api/unlike` - Unlike a post
-- `POST /api/retweet` - Retweet a post
-- `POST /api/quote` - Quote a post
-- `POST /api/comment` - Comment on a post
-- `GET /api/post/:id/liked/:user` - Check if user liked post
+
+```
+POST /api/like                  Like a post
+POST /api/unlike                Unlike a post
+POST /api/retweet               Retweet a post
+POST /api/quote                 Create a quote tweet
+POST /api/comment               Comment on a post
+GET  /api/post/:id/liked/:user  Check if user liked post
+```
 
 ### Social Graph
-- `POST /api/follow` - Follow a user
-- `POST /api/unfollow` - Unfollow a user
-- `GET /api/following/:user` - Get users following list
-- `GET /api/followers/:user` - Get users followers list
+
+```
+POST /api/follow                Follow a user
+POST /api/unfollow              Unfollow a user
+GET  /api/following/:user       Get following list
+GET  /api/followers/:user       Get followers list
+```
 
 ### Profiles
-- `POST /api/profile` - Create profile
-- `GET /api/profile/owner/:owner` - Get profile by address
-- `GET /api/profile/handle/:handle` - Get profile by handle
-- `GET /api/handle/available/:handle` - Check handle availability
-- `PUT /api/profile` - Update profile
+
+```
+POST /api/profile               Create user profile
+GET  /api/profile/owner/:owner  Get profile by address
+GET  /api/profile/handle/:handle Get profile by handle
+PUT  /api/profile               Update profile
+GET  /api/handle/available/:handle Check handle availability
+```
 
 ### Messaging
-- `POST /api/message/send` - Send a message
-- `GET /api/conversations/:user` - Get all conversations
-- `GET /api/messages/:user/:other` - Get messages between users
-- `DELETE /api/message/:id` - Delete a message
-- `POST /api/chat/clear` - Clear a conversation
-- `POST /api/block` - Block a user
-- `POST /api/unblock` - Unblock a user
-- `GET /api/blocked/:user/:other` - Check if user is blocked
-- `GET /api/blocked/:user` - Get all blocked users
+
+```
+POST /api/message/send          Send a direct message
+GET  /api/conversations/:user   Get all conversations
+GET  /api/messages/:user/:other Get messages between users
+DELETE /api/message/:id         Delete a message
+POST /api/chat/clear            Clear a conversation
+POST /api/block                 Block a user
+POST /api/unblock               Unblock a user
+```
 
 ### Chatbot
-- `POST /api/chatbot/chat` - Chat with AI bot
-- `GET /api/chatbot/history/:user` - Get chat history
-- `POST /api/chatbot/clear` - Clear chat history
+
+```
+POST /api/chatbot/chat          Chat with AI
+GET  /api/chatbot/history/:user Get chat history
+POST /api/chatbot/clear         Clear history
+```
 
 ### Notifications
-- `GET /api/notifications/:user` - Get user notifications
 
-## 🔐 Security Notes
+```
+GET /api/notifications/:user    Get user notifications
+```
 
-- The backend is a trusted relayer; lock down the server, rate-limit, and add auth as needed
-- Place the sponsor key in `.env` only, never in the frontend
-- Inputs are length-checked; extend with stricter validation and spam controls for production
-- Feeds are assembled via on-chain reads; for scale, add an indexer/subgraph
-- Supabase uses anon key for client-side operations; consider RLS policies for production
+---
+
+## 🔐 Security Considerations
+
+- **Relayer Trust** – The backend is a trusted service; secure your server and add rate limiting
+- **Key Management** – Never expose sponsor wallet keys; keep in `.env` only
+- **Input Validation** – Extend built-in length checks with stricter validation
+- **Spam Prevention** – Implement rate limiting and reputation checks in production
+- **Database Security** – Configure Supabase RLS policies for row-level access control
+- **CORS & Auth** – Add authentication middleware for sensitive endpoints
+
+---
 
 ## 🧪 Testing
 
-1. **Contracts**: Run `npx hardhat test` inside `contracts/`
-2. **Backend**: Test routes with curl/Postman
-3. **Frontend**: Connect wallet, post, like, retweet, quote, follow, message, and verify on-chain
+### Smart Contracts
+
+```bash
+cd contracts
+npx hardhat test
+```
+
+### Backend API
+
+Test endpoints using Postman or curl:
+
+```bash
+# Example: Create a post
+curl -X POST http://localhost:3001/api/tweet \
+  -H "Content-Type: application/json" \
+  -d '{"author":"0x...", "content":"Hello PolyX!"}'
+```
+
+### Frontend
+
+1. Connect your Amoy wallet
+2. Create a post and verify it appears in the feed
+3. Test likes, retweets, quotes, and follows
+4. Check contract interactions on Amoy Polygonscan
+
+---
 
 ## 📝 Environment Variables
 
-### Contracts
-- `AMOY_RPC_URL` - Polygon Amoy RPC endpoint
-- `DEPLOYER_PRIVATE_KEY` - Private key for deployment
+### Smart Contracts (`contracts/.env`)
 
-### Backend
-- `AMOY_RPC_URL` - Polygon Amoy RPC endpoint
-- `SPONSOR_PRIVATE_KEY` - Funded wallet that pays gas
-- `POLYX_CONTRACT_ADDRESS` - Deployed contract address
-- `SUPABASE_URL` - Supabase project URL
-- `SUPABASE_ANON_KEY` - Supabase anon key
-- `PINATA_JWT` - Pinata JWT token for IPFS
-- `GEMINI_API_KEY` - Google Gemini API key (optional)
-- `CHATBOT_ADDRESS` - Chatbot wallet address (optional)
-- `PORT` - Server port (default: 3001)
+```
+AMOY_RPC_URL=https://polygon-amoy.g.alchemy.com/v2/YOUR_KEY
+DEPLOYER_PRIVATE_KEY=your_private_key_here
+```
 
-### Frontend
-- `NEXT_PUBLIC_BACKEND_URL` - Backend API URL
-- `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` - WalletConnect project ID
-- `NEXT_PUBLIC_PINATA_GATEWAY` - IPFS gateway URL (optional)
+### Backend (`backend/.env`)
+
+```
+AMOY_RPC_URL=https://polygon-amoy.g.alchemy.com/v2/YOUR_KEY
+SPONSOR_PRIVATE_KEY=funded_wallet_private_key
+POLYX_CONTRACT_ADDRESS=0x...
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your_anon_key
+PINATA_JWT=your_pinata_jwt_token
+GEMINI_API_KEY=your_gemini_api_key
+CHATBOT_ADDRESS=0x... (optional)
+PORT=3001
+```
+
+### Frontend (`frontend/.env.local`)
+
+```
+NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
+NEXT_PUBLIC_PINATA_GATEWAY=https://gateway.pinata.cloud
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to your branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+For major changes, please open an issue first to discuss what you would like to change.
+
+---
 
 ## 📄 License
 
-MIT
+This project is licensed under the MIT License. See [LICENSE](./LICENSE) file for details.
 
-## 🙏 Acknowledgments
+---
 
-Built with:
-- [Next.js](https://nextjs.org/) - React framework
-- [Wagmi](https://wagmi.sh/) - React Hooks for Ethereum
-- [RainbowKit](https://rainbowkit.com/) - Wallet connection UI
-- [Supabase](https://supabase.com/) - Backend as a service
-- [Pinata](https://pinata.cloud/) - IPFS pinning service
-- [Google Gemini](https://ai.google.dev/) - AI chatbot
-- [Hardhat](https://hardhat.org/) - Ethereum development environment
-- [Polygon](https://polygon.technology/) - Layer 2 blockchain
-- [Render](https://render.com/) - Deployment platform
+## 🙏 Built With
 
-## 📞 Support
+<div align="center">
 
-For issues, questions, or contributions, please open an issue on GitHub.
+| | |
+|---|---|
+| [Next.js](https://nextjs.org/) | Modern React framework |
+| [Wagmi](https://wagmi.sh/) | Ethereum React Hooks |
+| [RainbowKit](https://rainbowkit.com/) | Wallet connection UI |
+| [Hardhat](https://hardhat.org/) | Smart contract development |
+| [Supabase](https://supabase.com/) | Open-source Firebase alternative |
+| [Pinata](https://pinata.cloud/) | IPFS pinning service |
+| [Polygon](https://polygon.technology/) | Layer 2 blockchain network |
+| [Google Gemini](https://ai.google.dev/) | AI chatbot engine |
+
+</div>
+
+---
+
+## 📞 Support & Community
+
+- 📖 **Documentation** – [Read the docs](#)
+- 🐛 **Bug Reports** – [GitHub Issues](https://github.com/yourusername/polyx/issues)
+- 💬 **Discord** – [Join our community](#)
+- 🐦 **Twitter** – [@PolyX](https://twitter.com)
+- 📧 **Email** – support@polyx.com
+
+---
+
+<div align="center">
+
+**Made with ❤️ by the PolyX team**
+
+[⬆ Back to top](#polyx--gasless-on-chain-social-network)
+
+</div>
