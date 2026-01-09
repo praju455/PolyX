@@ -77,7 +77,7 @@ export function Footer() {
           </div>
         </div>
         <div className="border-t border-white/10 mt-8 pt-8 text-center text-sm opacity-60">
-          <p>© 2025 PolyX. Built on Polygon Amoy. All rights reserved.</p>
+          <p>© 2026 PolyX. Built on Polygon Amoy. All rights reserved.</p>
         </div>
       </div>
     </footer>
