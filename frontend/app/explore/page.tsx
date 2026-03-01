@@ -186,7 +186,7 @@ function SearchResults({ query, activeTab }: { query: string; activeTab: string 
     );
   }
 
-  if (activeTab === "posts" && (!hasPosts || postResults!.length === 0)) {
+  if (activeTab === "posts" && (!hasPosts || !postResults || postResults.length === 0)) {
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}

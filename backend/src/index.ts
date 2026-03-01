@@ -416,7 +416,6 @@ app.post("/api/tweet", async (req, res) => {
     const receipt = await createPost(parsed.data.user, parsed.data.text, parsed.data.mediaCid, PostTypeEnum.Original, 0);
     const postId = extractPostIdFromReceipt(receipt);
     
-<<<<<<< HEAD
     // Upsert posts cache for hashtags/search
     if (postId) {
       upsertPostCache(postId, parsed.data.user, parsed.data.text, 0, 0, Math.floor(Date.now() / 1000)).catch((e) => console.error("Posts cache upsert error:", e));
@@ -432,8 +431,6 @@ app.post("/api/tweet", async (req, res) => {
       }
     }
     
-=======
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     // Check if post mentions chatbot and auto-respond
     if (isMentioned(parsed.data.text) && postId) {
       // IMPORTANT: Check if we've already responded to this post
@@ -498,7 +495,6 @@ app.post("/api/quote", async (req, res) => {
   try {
     const receipt = await quote(parsed.data.user, parsed.data.postId, parsed.data.text, parsed.data.mediaCid);
     const postId = extractPostIdFromReceipt(receipt);
-<<<<<<< HEAD
     if (postId) {
       upsertPostCache(postId, parsed.data.user, parsed.data.text, 2, parsed.data.postId, Math.floor(Date.now() / 1000)).catch((e) => console.error("Posts cache upsert error:", e));
       const mentions = extractMentions(parsed.data.text);
@@ -511,8 +507,6 @@ app.post("/api/quote", async (req, res) => {
         } catch {}
       }
     }
-=======
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     return respond(res, { success: true, data: { txHash: receipt?.hash, postId } });
   } catch (err: any) {
     return respond(res, { success: false, error: err.message || "Failed to quote" });
@@ -526,7 +520,6 @@ app.post("/api/comment", async (req, res) => {
     const receipt = await comment(parsed.data.user, parsed.data.postId, parsed.data.text, parsed.data.mediaCid);
     const postId = extractPostIdFromReceipt(receipt);
     
-<<<<<<< HEAD
     if (postId) {
       upsertPostCache(postId, parsed.data.user, parsed.data.text, 3, parsed.data.postId, Math.floor(Date.now() / 1000)).catch((e) => console.error("Posts cache upsert error:", e));
       const mentions = extractMentions(parsed.data.text);
@@ -540,8 +533,6 @@ app.post("/api/comment", async (req, res) => {
       }
     }
     
-=======
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     // Check if comment mentions chatbot and auto-respond
     if (isMentioned(parsed.data.text) && postId) {
       // IMPORTANT: Check if we've already responded to this comment
@@ -630,7 +621,6 @@ app.post("/api/delete", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 app.get("/api/feed", async (req, res) => {
   try {
     const tag = req.query.tag as string | undefined;
@@ -647,14 +637,6 @@ app.get("/api/feed", async (req, res) => {
       for (let id = nextId - 1; id > 0; id--) {
         allPostIds.push(id);
       }
-=======
-app.get("/api/feed", async (_req, res) => {
-  try {
-    const nextId = await fetchPostCount();
-    const allPostIds: number[] = [];
-    for (let id = nextId - 1; id > 0; id--) {
-      allPostIds.push(id);
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     }
     const allPosts = await readBatch(allPostIds);
     const filtered = allPosts.filter((p) => !p.deleted);
@@ -910,7 +892,6 @@ app.get("/api/search", async (req, res) => {
     if (!query || query.length < 2) {
       return respond(res, { success: false, error: "Query must be at least 2 characters" });
     }
-<<<<<<< HEAD
     // Search by handle first
     try {
       const profile = await getProfileByHandle(query);
@@ -928,18 +909,11 @@ app.get("/api/search", async (req, res) => {
       } catch {}
     }
     return respond<Profile[]>(res, { success: true, data: [] });
-=======
-    // Simple search - in production, use an indexer
-    const results: Profile[] = [];
-    // This is a placeholder - implement proper search with indexer
-    return respond<Profile[]>(res, { success: true, data: results });
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
   } catch (err: any) {
     return respond(res, { success: false, error: err.message || "Failed to search" });
   }
 });
 
-<<<<<<< HEAD
 app.get("/api/search/posts", async (req, res) => {
   try {
     const query = req.query.q as string;
@@ -1077,8 +1051,6 @@ app.get("/api/post/:id/reaction/:user", async (req, res) => {
   }
 });
 
-=======
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 app.get("/api/notifications/:user", async (req, res) => {
   try {
     const user = req.params.user;
@@ -1092,17 +1064,12 @@ app.get("/api/notifications/:user", async (req, res) => {
     ]);
     
     const notifications: Array<{
-<<<<<<< HEAD
       type: "like" | "quote" | "comment" | "follow" | "mention";
-=======
-      type: "like" | "quote" | "comment" | "follow";
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
       from: string;
       postId?: number;
       timestamp: number;
     }> = [];
     
-<<<<<<< HEAD
     // Add mention notifications from MongoDB
     try {
       const mentionNotifs = await getMentionNotifications(user);
@@ -1111,8 +1078,6 @@ app.get("/api/notifications/:user", async (req, res) => {
       }
     } catch {}
     
-=======
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     for (const event of likedEvents) {
       if (event && "args" in event && event.args) {
         const postId = Number(event.args[0]);
@@ -1295,16 +1260,11 @@ app.post("/api/chatbot/check-mentions", async (_req, res) => {
   }
 });
 
-<<<<<<< HEAD
 connectDb()
   .then(() => {
     console.log("✅ MongoDB connected");
     app.listen(PORT, () => {
       console.log(`PolyX backend listening on http://localhost:${PORT}`);
-=======
-app.listen(PORT, () => {
-  console.log(`PolyX backend listening on http://localhost:${PORT}`);
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
   if (!process.env.GEMINI_API_KEY) {
     console.warn("⚠️  GEMINI_API_KEY not set. Chatbot features will be disabled.");
   }
@@ -1314,13 +1274,9 @@ app.listen(PORT, () => {
   // Even if the backend was sleeping, it will catch up on missed mentions when it wakes up
   const MONITOR_INTERVAL_MS = parseInt(process.env.MENTION_MONITOR_INTERVAL_MS || "30000", 10);
   startMentionMonitoring(MONITOR_INTERVAL_MS);
-<<<<<<< HEAD
     });
   })
   .catch((err) => {
     console.error("❌ Failed to connect to MongoDB:", err);
     process.exit(1);
   });
-=======
-});
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
