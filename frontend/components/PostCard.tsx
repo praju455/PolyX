@@ -5,6 +5,8 @@ import { api, Post, Profile } from "../lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { Composer } from "./Composer";
 import { ContentWithLinks } from "./ContentWithLinks";
+import { TipButton } from "./TipButton";
+import { ShareButton } from "./ShareButton";
 import classNames from "classnames";
 import Link from "next/link";
 
@@ -285,23 +287,7 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
               <span className="text-sm opacity-60">{formatTime(post.timestamp)}</span>
             </div>
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => {
-                  const url = typeof window !== "undefined" ? `${window.location.origin}/post/${post.id}` : `/post/${post.id}`;
-                  navigator.clipboard.writeText(url);
-                  // Simple feedback - could use toast
-                  const btn = document.activeElement as HTMLButtonElement;
-                  if (btn) {
-                    const orig = btn.textContent;
-                    btn.textContent = "Copied!";
-                    setTimeout(() => { btn.textContent = orig; }, 1500);
-                  }
-                }}
-                className="text-white/60 hover:text-indigo-400 p-2 rounded-lg hover:bg-white/5 transition-colors"
-                title="Share"
-              >
-                🔗
-              </button>
+              <ShareButton postId={post.id} />
               {address && address.toLowerCase() === post.author.toLowerCase() && (
                 <button
                   onClick={() => {
@@ -439,6 +425,7 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
         >
           <span className="text-xl">{isBookmarked ? "🔖" : "📑"}</span>
         </button>
+        <TipButton postId={post.id} />
         {post.referenceId && (
           <Link
             href={`/post/${post.referenceId}`}

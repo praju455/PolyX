@@ -21,42 +21,50 @@ export async function connectDb() {
 }
 
 async function ensureIndexes(database: NonNullable<typeof db>) {
-  const messages = database.collection("messages");
-  await messages.createIndex({ from_address: 1, to_address: 1 });
-  await messages.createIndex({ created_at: -1 });
+  try {
+    const messages = database.collection("messages");
+    await messages.createIndex({ from_address: 1, to_address: 1 });
+    await messages.createIndex({ created_at: -1 });
 
-  const blockedUsers = database.collection("blocked_users");
-  await blockedUsers.createIndex(
-    { blocker_address: 1, blocked_address: 1 },
-    { unique: true }
-  );
+    const blockedUsers = database.collection("blocked_users");
+    await blockedUsers.createIndex(
+      { blocker_address: 1, blocked_address: 1 },
+      { unique: true }
+    );
 
-  const followers = database.collection("followers");
-  await followers.createIndex(
-    { follower_address: 1, following_address: 1 },
-    { unique: true }
-  );
+    const followers = database.collection("followers");
+    await followers.createIndex(
+      { follower_address: 1, following_address: 1 },
+      { unique: true }
+    );
 
-  const bookmarks = database.collection("bookmarks");
-  await bookmarks.createIndex(
-    { user_address: 1, post_id: 1 },
-    { unique: true }
-  );
+    const bookmarks = database.collection("bookmarks");
+    await bookmarks.createIndex(
+      { user_address: 1, post_id: 1 },
+      { unique: true }
+    );
 
-  const postsCache = database.collection("posts_cache");
-  await postsCache.createIndex({ post_id: 1 }, { unique: true });
-  await postsCache.createIndex({ content: "text" });
-  await postsCache.createIndex({ hashtags: 1 });
-  await postsCache.createIndex({ created_at: -1 });
+    const postsCache = database.collection("posts_cache");
+    await postsCache.createIndex({ post_id: 1 }, { unique: true });
+    try {
+      await postsCache.createIndex({ content: "text" });
+    } catch {
+      // Text index may already exist with different options
+    }
+    await postsCache.createIndex({ hashtags: 1 });
+    await postsCache.createIndex({ created_at: -1 });
 
-  const reactions = database.collection("reactions");
-  await reactions.createIndex(
-    { user_address: 1, post_id: 1 },
-    { unique: true }
-  );
+    const reactions = database.collection("reactions");
+    await reactions.createIndex(
+      { user_address: 1, post_id: 1 },
+      { unique: true }
+    );
 
-  const mentions = database.collection("mentions");
-  await mentions.createIndex({ user_address: 1, post_id: 1, from_address: 1 });
+    const mentions = database.collection("mentions");
+    await mentions.createIndex({ user_address: 1, post_id: 1, from_address: 1 });
+  } catch (err) {
+    console.warn("Index creation warning (may already exist):", (err as Error).message);
+  }
 }
 
 export interface Message {
