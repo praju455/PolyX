@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: polyx-frontend
+    env: node
+    plan: starter
+    region: oregon
+    rootDir: .
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+
