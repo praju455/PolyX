@@ -10,7 +10,11 @@
 ![Smart Contracts](https://img.shields.io/badge/Smart%20Contracts-Solidity-navy?logo=ethereum&logoColor=white&style=flat-square)
 ![Frontend](https://img.shields.io/badge/Frontend-Next.js-black?logo=nextjs&logoColor=white&style=flat-square)
 ![Backend](https://img.shields.io/badge/Backend-Node.js-green?logo=nodejs&logoColor=white&style=flat-square)
+<<<<<<< HEAD
 ![Database](https://img.shields.io/badge/Database-MongoDB-green?logo=mongodb&logoColor=white&style=flat-square)
+=======
+![Database](https://img.shields.io/badge/Database-Supabase-emerald?logo=supabase&logoColor=white&style=flat-square)
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 
 [🌐 Website](#) • [📖 Documentation](#) • [🐛 Issues](https://github.com) • [💬 Discord](#)
 
@@ -86,7 +90,11 @@ Built with **Next.js**, **Hardhat**, **Wagmi**, and **Supabase**, PolyX demonstr
 - **Node.js + Express** – RESTful API server
 - **TypeScript** – Type-safe backend
 - **Hardhat** – Smart contract toolkit
+<<<<<<< HEAD
 - **MongoDB** – Document database for messages, bookmarks, reactions, and search
+=======
+- **Supabase** – PostgreSQL database for fast queries
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 - **Pinata** – IPFS integration for media
 - **Google Gemini** – AI chatbot engine
 
@@ -110,7 +118,11 @@ Built with **Next.js**, **Hardhat**, **Wagmi**, and **Supabase**, PolyX demonstr
 | **Profiles** | Custom profiles with avatars and bios |
 | **Messaging** | DMs, read receipts, blocking, bulk delete |
 | **AI Chatbot** | Gemini integration, mention responses, history |
+<<<<<<< HEAD
 | **Storage** | On-chain smart contracts + MongoDB + IPFS |
+=======
+| **Storage** | On-chain smart contracts + Supabase + IPFS |
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 | **Wallets** | WalletConnect, RainbowKit, multi-wallet support |
 | **UI/UX** | Modern design, responsive, dark theme |
 
@@ -170,10 +182,17 @@ PolyX/
 │   ├── src/
 │   │   ├── index.ts               # Express server
 │   │   ├── contract.ts            # Contract interactions
+<<<<<<< HEAD
 │   │   ├── db.ts                  # MongoDB client
 │   │   ├── chatbot.ts             # AI integration
 │   │   └── types.ts               # TypeScript definitions
 │   │   # MongoDB collections (auto-created)
+=======
+│   │   ├── supabase.ts            # Database client
+│   │   ├── chatbot.ts             # AI integration
+│   │   └── types.ts               # TypeScript definitions
+│   ├── supabase-schema-*.sql      # Database schemas
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 │   └── .env.example               # Configuration template
 │
 └── frontend/                       # Next.js Application
@@ -203,7 +222,11 @@ Before you begin, ensure you have:
 - **Polygon Amoy RPC URL** – From Alchemy, Infura, or Ankr
 - **Funded Amoy Wallet** – For deployment and relaying (0.1 test MATIC)
 - **WalletConnect Project ID** – From https://cloud.walletconnect.com
+<<<<<<< HEAD
 - **MongoDB** – Local or Atlas at https://mongodb.com
+=======
+- **Supabase Account** – Free tier at https://supabase.com
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 - **Pinata Account** – For IPFS pinning at https://pinata.cloud
 - **Google Gemini API Key** – Optional, for chatbot features
 
@@ -234,11 +257,21 @@ npx hardhat run scripts/deploy.ts --network amoy
 # Copy the printed contract address for next step
 ```
 
+<<<<<<< HEAD
 ### Step 3: Setup MongoDB
 
 1. Install MongoDB locally or use MongoDB Atlas (free tier)
 2. Default connection: `mongodb://localhost:27017/polyx`
 3. Collections are auto-created on first run
+=======
+### Step 3: Setup Supabase
+
+1. Go to https://supabase.com and create a new project
+2. In the SQL Editor, run the migration files:
+   - `backend/supabase-schema-clean.sql`
+   - `backend/supabase-followers-schema.sql`
+3. Copy your Supabase URL and anon key from Project Settings
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 
 ### Step 4: Configure & Run Backend
 
@@ -250,13 +283,23 @@ cp env.example .env
 # AMOY_RPC_URL=your_rpc_url
 # SPONSOR_PRIVATE_KEY=funded_wallet_private_key
 # POLYX_CONTRACT_ADDRESS=0x... (from Step 2)
+<<<<<<< HEAD
 # MONGODB_URI=mongodb://localhost:27017/polyx
+=======
+# SUPABASE_URL=your_supabase_url
+# SUPABASE_ANON_KEY=your_anon_key
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 # PINATA_JWT=your_pinata_jwt
 # GEMINI_API_KEY=your_gemini_key (optional)
 # PORT=3001
 
+<<<<<<< HEAD
 npm install
 npm run dev
+=======
+pnpm install
+pnpm dev
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 ```
 
 ### Step 5: Configure & Run Frontend
@@ -269,10 +312,16 @@ cp env.example .env.local
 # NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
 # NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
 # NEXT_PUBLIC_PINATA_GATEWAY=https://gateway.pinata.cloud
+<<<<<<< HEAD
 # NEXT_PUBLIC_POLYX_CONTRACT_ADDRESS=0x... (for Tip button)
 
 npm install
 npm run dev
+=======
+
+pnpm install
+pnpm dev
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 ```
 
 ### Step 6: Launch
@@ -358,7 +407,11 @@ GET /api/notifications/:user    Get user notifications
 - **Key Management** – Never expose sponsor wallet keys; keep in `.env` only
 - **Input Validation** – Extend built-in length checks with stricter validation
 - **Spam Prevention** – Implement rate limiting and reputation checks in production
+<<<<<<< HEAD
 - **Database Security** – Secure MongoDB with authentication and network access control
+=======
+- **Database Security** – Configure Supabase RLS policies for row-level access control
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 - **CORS & Auth** – Add authentication middleware for sensitive endpoints
 
 ---
@@ -407,7 +460,12 @@ DEPLOYER_PRIVATE_KEY=your_private_key_here
 AMOY_RPC_URL=https://polygon-amoy.g.alchemy.com/v2/YOUR_KEY
 SPONSOR_PRIVATE_KEY=funded_wallet_private_key
 POLYX_CONTRACT_ADDRESS=0x...
+<<<<<<< HEAD
 MONGODB_URI=mongodb://localhost:27017/polyx
+=======
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your_anon_key
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 PINATA_JWT=your_pinata_jwt_token
 GEMINI_API_KEY=your_gemini_api_key
 CHATBOT_ADDRESS=0x... (optional)
@@ -454,7 +512,11 @@ This project is licensed under the MIT License. See [LICENSE](./LICENSE) file fo
 | [Wagmi](https://wagmi.sh/) | Ethereum React Hooks |
 | [RainbowKit](https://rainbowkit.com/) | Wallet connection UI |
 | [Hardhat](https://hardhat.org/) | Smart contract development |
+<<<<<<< HEAD
 | [MongoDB](https://mongodb.com/) | Document database |
+=======
+| [Supabase](https://supabase.com/) | Open-source Firebase alternative |
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 | [Pinata](https://pinata.cloud/) | IPFS pinning service |
 | [Polygon](https://polygon.technology/) | Layer 2 blockchain network |
 | [Google Gemini](https://ai.google.dev/) | AI chatbot engine |

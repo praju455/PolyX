@@ -274,6 +274,7 @@ contract PolyX {
         emit ChatAnchored(logicalUser, to, cid, cidHash, block.timestamp);
     }
 
+<<<<<<< HEAD
     // --- Tipping ---
     event Tipped(uint256 indexed postId, address indexed from, address indexed to, uint256 amount, uint256 timestamp);
 
@@ -287,6 +288,8 @@ contract PolyX {
         emit Tipped(postId, msg.sender, author, msg.value, block.timestamp);
     }
 
+=======
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     // --- Internal ---
     function _writePost(
         address logicalUser,

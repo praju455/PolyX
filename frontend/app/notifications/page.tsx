@@ -96,7 +96,11 @@ function NotificationItem({
   notification, 
   index 
 }: { 
+<<<<<<< HEAD
   notification: { type: "like" | "quote" | "comment" | "follow" | "mention"; from: string; postId?: number; timestamp: number };
+=======
+  notification: { type: "like" | "quote" | "comment" | "follow"; from: string; postId?: number; timestamp: number };
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
   index: number;
 }) {
   const { data: profile } = useQuery<Profile>({
@@ -111,28 +115,47 @@ function NotificationItem({
     ? `${process.env.NEXT_PUBLIC_PINATA_GATEWAY || "https://gateway.pinata.cloud"}/ipfs/${profile.avatarCid}`
     : null;
 
+<<<<<<< HEAD
   const icons: Record<string, string> = {
+=======
+  const icons = {
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     like: "❤️",
     quote: "💬",
     comment: "💭",
     follow: "👤",
+<<<<<<< HEAD
     mention: "📌",
   };
 
   const colors: Record<string, string> = {
+=======
+  };
+
+  const colors = {
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     like: "from-red-500/20 to-pink-500/20 border-red-500/30",
     quote: "from-blue-500/20 to-cyan-500/20 border-blue-500/30",
     comment: "from-purple-500/20 to-indigo-500/20 border-purple-500/30",
     follow: "from-green-500/20 to-emerald-500/20 border-green-500/30",
+<<<<<<< HEAD
     mention: "from-amber-500/20 to-orange-500/20 border-amber-500/30",
   };
 
   const messages: Record<string, string> = {
+=======
+  };
+
+  const messages = {
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     like: "liked your post",
     quote: "quoted your post",
     comment: "commented on your post",
     follow: "started following you",
+<<<<<<< HEAD
     mention: "mentioned you in a post",
+=======
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
   };
 
   return (
@@ -140,7 +163,11 @@ function NotificationItem({
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.05 }}
+<<<<<<< HEAD
       className={`card-3d p-5 bg-gradient-to-r ${colors[notification.type] || "from-indigo-500/20 to-purple-500/20 border-indigo-500/30"} hover:scale-[1.02] transition-transform cursor-pointer group`}
+=======
+      className={`card-3d p-5 bg-gradient-to-r ${colors[notification.type]} hover:scale-[1.02] transition-transform cursor-pointer group`}
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     >
       <Link
         href={notification.postId ? `/post/${notification.postId}` : `/profile?user=${notification.from}`}
@@ -153,14 +180,22 @@ function NotificationItem({
               alt={displayName} 
               className="w-16 h-16 rounded-xl object-cover border-2 border-indigo-500/50 group-hover:border-indigo-400 transition-all shadow-lg" 
             />
+<<<<<<< HEAD
             <div className="absolute -top-1 -right-1 text-2xl">{icons[notification.type] || "🔔"}</div>
+=======
+            <div className="absolute -top-1 -right-1 text-2xl">{icons[notification.type]}</div>
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
           </div>
         ) : (
           <div className="relative">
             <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-lg">
               {displayName.charAt(0).toUpperCase()}
             </div>
+<<<<<<< HEAD
             <div className="absolute -top-1 -right-1 text-2xl">{icons[notification.type] || "🔔"}</div>
+=======
+            <div className="absolute -top-1 -right-1 text-2xl">{icons[notification.type]}</div>
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
           </div>
         )}
         <div className="flex-1">
@@ -171,7 +206,11 @@ function NotificationItem({
             >
               {displayName}
             </Link>
+<<<<<<< HEAD
             <span className="text-gray-300 ml-2">{messages[notification.type] || "notified you"}</span>
+=======
+            <span className="text-gray-300 ml-2">{messages[notification.type]}</span>
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
           </p>
           <p className="text-xs text-gray-400 mt-1">{formatTime(notification.timestamp)}</p>
         </div>

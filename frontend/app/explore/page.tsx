@@ -3,16 +3,23 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { api, Profile, Post } from "../../lib/api";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { PostCard } from "../../components/PostCard";
+=======
+import { api, Profile } from "../../lib/api";
+import Link from "next/link";
+import { motion } from "framer-motion";
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 
 function ExploreContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchInput, setSearchInput] = useState("");
   const [mounted, setMounted] = useState(false);
+<<<<<<< HEAD
   const [activeTab, setActiveTab] = useState<"users" | "hashtags" | "posts">("users");
   const query = searchParams.get("q") || "";
   const tag = searchParams.get("tag") || "";
@@ -20,6 +27,15 @@ function ExploreContent() {
   useEffect(() => {
     setMounted(true);
     if (query) setSearchInput(query);
+=======
+  const query = searchParams.get("q") || "";
+
+  useEffect(() => {
+    setMounted(true);
+    if (query) {
+      setSearchInput(query);
+    }
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
   }, [query]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -29,6 +45,7 @@ function ExploreContent() {
     }
   };
 
+<<<<<<< HEAD
   const { data: trending } = useQuery({
     queryKey: ["trendingHashtags"],
     queryFn: api.trendingHashtags,
@@ -40,6 +57,8 @@ function ExploreContent() {
     enabled: !!tag && mounted,
   });
 
+=======
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
   if (!mounted) {
     return (
       <div className="max-w-6xl mx-auto">
@@ -55,12 +74,17 @@ function ExploreContent() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
+<<<<<<< HEAD
+=======
+      {/* Header */}
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="card-3d p-8"
       >
         <h1 className="text-4xl font-bold gradient-text mb-2">Explore</h1>
+<<<<<<< HEAD
         <p className="text-gray-400 mb-6">Discover users, hashtags, and posts</p>
 
         <div className="flex gap-2 mb-4">
@@ -78,13 +102,20 @@ function ExploreContent() {
             </button>
           ))}
         </div>
+=======
+        <p className="text-gray-400 mb-6">Discover users and connect with the community</p>
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
         
         <form onSubmit={handleSearch} className="space-y-4">
           <div className="relative">
             <input
               type="text"
               className="w-full bg-slate-800/50 border border-indigo-500/30 rounded-2xl p-4 pl-12 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-lg text-white placeholder-gray-500 transition-all"
+<<<<<<< HEAD
               placeholder="Search by username, address, or post content..."
+=======
+              placeholder="Search by username or address..."
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
             />
@@ -96,6 +127,7 @@ function ExploreContent() {
         </form>
       </motion.div>
 
+<<<<<<< HEAD
       {activeTab === "hashtags" && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="card-3d p-6">
           <h2 className="text-xl font-bold mb-4">Trending Hashtags</h2>
@@ -140,10 +172,15 @@ function ExploreContent() {
       )}
 
       {query && !tag && <SearchResults query={query} activeTab={activeTab} />}
+=======
+      {/* Results */}
+      {query && <SearchResults query={query} />}
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     </div>
   );
 }
 
+<<<<<<< HEAD
 function SearchResults({ query, activeTab }: { query: string; activeTab: string }) {
   const { data: userResults, isLoading: isLoadingUsers } = useQuery<Profile[]>({
     queryKey: ["search", query],
@@ -162,6 +199,16 @@ function SearchResults({ query, activeTab }: { query: string; activeTab: string 
   const hasUsers = userResults && userResults.length > 0;
   const hasPosts = postResults && postResults.length > 0;
 
+=======
+function SearchResults({ query }: { query: string }) {
+  const { data: results, isLoading } = useQuery<Profile[]>({
+    queryKey: ["search", query],
+    queryFn: () => api.search(query),
+    enabled: query.length >= 2,
+    retry: false,
+  });
+
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
   if (isLoading) {
     return (
       <div className="card-3d p-8 text-center">
@@ -172,20 +219,29 @@ function SearchResults({ query, activeTab }: { query: string; activeTab: string 
     );
   }
 
+<<<<<<< HEAD
   if (activeTab === "users" && (!hasUsers || userResults.length === 0)) {
+=======
+  if (!results || results.length === 0) {
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         className="card-3d p-12 text-center space-y-4"
       >
+<<<<<<< HEAD
         <div className="text-6xl mb-4">🔍</div>
+=======
+        <div className="text-6xl mb-4 float">🔍</div>
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
         <h3 className="text-xl font-semibold text-white">No users found</h3>
         <p className="text-gray-400">Try searching with a different term</p>
       </motion.div>
     );
   }
 
+<<<<<<< HEAD
   if (activeTab === "posts" && (!hasPosts || postResults.length === 0)) {
     return (
       <motion.div
@@ -227,6 +283,18 @@ function SearchResults({ query, activeTab }: { query: string; activeTab: string 
   }
 
   return null;
+=======
+  return (
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold text-white">Search Results</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {results.map((profile, idx) => (
+          <UserCard key={profile.owner} profile={profile} index={idx} />
+        ))}
+      </div>
+    </div>
+  );
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 }
 
 function UserCard({ profile, index }: { profile: Profile; index: number }) {

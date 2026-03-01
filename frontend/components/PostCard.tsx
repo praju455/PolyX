@@ -4,9 +4,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, Post, Profile } from "../lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { Composer } from "./Composer";
+<<<<<<< HEAD
 import { ContentWithLinks } from "./ContentWithLinks";
 import { TipButton } from "./TipButton";
 import { ShareButton } from "./ShareButton";
+=======
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 import classNames from "classnames";
 import Link from "next/link";
 
@@ -35,7 +38,11 @@ function typeLabel(post: Post) {
 export function PostCard({ post, showComments = false, isComment = false }: { post: Post; showComments?: boolean; isComment?: boolean }) {
   const { address } = useAccount();
   const [showComment, setShowComment] = useState(false);
+<<<<<<< HEAD
   const [showAllComments, setShowAllComments] = useState(showComments); // Show by default when on post page
+=======
+  const [showAllComments, setShowAllComments] = useState(false); // Hidden by default
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
   const queryClient = useQueryClient();
 
   // Fetch profile for the post author
@@ -80,6 +87,7 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
     retry: false,
   });
 
+<<<<<<< HEAD
   const { data: bookmarkStatus } = useQuery<{ bookmarked: boolean }>({
     queryKey: ["bookmarkStatus", post.id, address],
     queryFn: () => (address ? api.isBookmarked(post.id, address) : Promise.resolve({ bookmarked: false })),
@@ -102,6 +110,10 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
   const isLiked = likeStatus?.liked || false;
   const isRetweeted = retweetStatus?.retweeted || false;
   const isBookmarked = bookmarkStatus?.bookmarked || false;
+=======
+  const isLiked = likeStatus?.liked || false;
+  const isRetweeted = retweetStatus?.retweeted || false;
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
 
   const displayName = authorProfile?.displayName || authorProfile?.handle || `${post.author.slice(0, 6)}...${post.author.slice(-4)}`;
   const avatarUrl = authorProfile?.avatarCid
@@ -187,6 +199,7 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
     },
   });
 
+<<<<<<< HEAD
   const bookmarkMutation = useMutation({
     mutationFn: async () => {
       if (!address) throw new Error("Connect wallet first");
@@ -216,6 +229,8 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
     },
   });
 
+=======
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
   const followMutation = useMutation({
     mutationFn: async () => {
       if (!address) throw new Error("Connect wallet first");
@@ -287,7 +302,10 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
               <span className="text-sm opacity-60">{formatTime(post.timestamp)}</span>
             </div>
             <div className="flex items-center gap-2">
+<<<<<<< HEAD
               <ShareButton postId={post.id} />
+=======
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
               {address && address.toLowerCase() === post.author.toLowerCase() && (
                 <button
                   onClick={() => {
@@ -349,7 +367,17 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
             "opacity-80 italic": post.postType === 1,
           })}
         >
+<<<<<<< HEAD
           <ContentWithLinks content={post.content} highlightBot />
+=======
+          {post.content.split(/(@PolyXBot|@polyxbot)/i).map((part, idx) => 
+            /@polyxbot/i.test(part) ? (
+              <span key={idx} className="text-indigo-400 font-semibold">@PolyXBot</span>
+            ) : (
+              <span key={idx}>{part}</span>
+            )
+          )}
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
         </p>
       )}
 
@@ -359,7 +387,11 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
         </div>
       )}
 
+<<<<<<< HEAD
       <div className="flex items-center gap-6 pt-3 border-t border-white/10 flex-wrap">
+=======
+      <div className="flex items-center gap-8 pt-3 border-t border-white/10">
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
         <button
           className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all group ${
             isLiked
@@ -374,6 +406,7 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
           </span>
           <span className={`text-sm font-semibold ${isLiked ? "text-red-400" : ""}`}>{post.likeCount || 0}</span>
         </button>
+<<<<<<< HEAD
         <div className="flex items-center gap-1 group/reactions">
           {(["fire", "love", "laugh"] as const).map((type) => (
             <button
@@ -394,6 +427,8 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
             </span>
           ) : null}
         </div>
+=======
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
         <button
           className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all group shadow-md hover:shadow-lg transform hover:scale-105 ${
             isRetweeted
@@ -415,6 +450,7 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
           <span className="text-2xl group-hover:scale-110 transition-transform">💬</span>
           <span className="text-sm font-semibold">{post.commentCount || 0}</span>
         </button>
+<<<<<<< HEAD
         <button
           className={`flex items-center gap-2 transition-all group ${
             isBookmarked ? "text-amber-400" : "hover:text-amber-400"
@@ -426,6 +462,8 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
           <span className="text-xl">{isBookmarked ? "🔖" : "📑"}</span>
         </button>
         <TipButton postId={post.id} />
+=======
+>>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
         {post.referenceId && (
           <Link
             href={`/post/${post.referenceId}`}
