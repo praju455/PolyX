@@ -417,6 +417,7 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
                 userReaction?.reactionType === type ? "opacity-100" : "opacity-60 hover:opacity-100"
               }`}
               title={type}
+              aria-label={`React with ${type}`}
             >
               {type === "fire" ? "🔥" : type === "love" ? "😍" : "😂"}
             </button>
@@ -458,6 +459,7 @@ export function PostCard({ post, showComments = false, isComment = false }: { po
           onClick={() => bookmarkMutation.mutate()}
           disabled={bookmarkMutation.isPending || !address}
           title="Bookmark"
+          aria-label={isBookmarked ? "Remove bookmark" : "Save to bookmarks"}
         >
           <span className="text-xl">{isBookmarked ? "🔖" : "📑"}</span>
         </button>

@@ -52,6 +52,7 @@ export function TipButton({ postId }: { postId: number }) {
         disabled={!address}
         className="flex items-center gap-2 hover:text-amber-400 transition-all group"
         title="Tip author"
+        aria-label="Send tip to author"
       >
         <span className="text-xl">💰</span>
       </button>

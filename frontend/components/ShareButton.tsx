@@ -17,6 +17,7 @@ export function ShareButton({ postId }: { postId: number }) {
       onClick={handleShare}
       className="text-white/60 hover:text-indigo-400 p-2 rounded-lg hover:bg-white/5 transition-colors"
       title="Share"
+      aria-label={copied ? "Link copied" : "Copy post link"}
     >
       {copied ? "✓" : "🔗"}
     </button>
