@@ -126,7 +126,6 @@ export function Sidebar() {
                   )}
                 </Link>
                 <Link
-<<<<<<< HEAD
                   href="/bookmarks"
                   onClick={() => setIsMobileOpen(false)}
                   className={`
@@ -150,8 +149,6 @@ export function Sidebar() {
                   )}
                 </Link>
                 <Link
-=======
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
                   href="/messaging"
                   onClick={() => setIsMobileOpen(false)}
                   className={`

@@ -33,11 +33,38 @@ import {
   contract,
 } from "./contract.js";
 import { ApiResponse, Post, Profile, PostTypeEnum } from "./types.js";
-<<<<<<< HEAD
-import { connectDb, getConversations, getMessages, sendMessage, deleteMessage, clearChat, blockUser, unblockUser, isBlocked, getBlockedUsers, syncFollowToMongo, syncUnfollowFromMongo, getFollowersFromMongo, getFollowingFromMongo, addBookmark, removeBookmark, getBookmarks, isBookmarked, upsertPostCache, extractHashtags, extractMentions, getPostIdsByHashtag, searchPosts, getTrendingHashtags, addMentionNotification, getMentionNotifications, addReaction, removeReaction, getReactions, getUserReaction } from "./db.js";
-=======
-import { getConversations, getMessages, sendMessage, deleteMessage, clearChat, blockUser, unblockUser, isBlocked, getBlockedUsers, syncFollowToSupabase, syncUnfollowFromSupabase, getFollowersFromSupabase, getFollowingFromSupabase } from "./supabase.js";
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
+import {
+  connectDb,
+  getConversations,
+  getMessages,
+  sendMessage,
+  deleteMessage,
+  clearChat,
+  blockUser,
+  unblockUser,
+  isBlocked,
+  getBlockedUsers,
+  syncFollowToMongo,
+  syncUnfollowFromMongo,
+  getFollowersFromMongo,
+  getFollowingFromMongo,
+  addBookmark,
+  removeBookmark,
+  getBookmarks,
+  isBookmarked,
+  upsertPostCache,
+  extractHashtags,
+  extractMentions,
+  getPostIdsByHashtag,
+  searchPosts,
+  getTrendingHashtags,
+  addMentionNotification,
+  getMentionNotifications,
+  addReaction,
+  removeReaction,
+  getReactions,
+  getUserReaction,
+} from "./db.js";
 import { chatWithBot, getChatHistory, clearChatHistory, respondToMention, isMentioned, CHATBOT_HANDLE } from "./chatbot.js";
 import { startMentionMonitoring, markPostAsResponded, triggerMentionCheck, unmarkPostAsResponded } from "./mention-monitor.js";
 
@@ -223,21 +250,14 @@ app.post("/api/follow", async (req, res) => {
     }
     
     const receipt = await follow(parsed.data.user, parsed.data.target);
-    
-<<<<<<< HEAD
+
     // Sync to MongoDB after successful on-chain follow (async, don't block response)
     syncFollowToMongo(parsed.data.user, parsed.data.target)
       .then(() => {
         console.log(`✅ Synced follow to MongoDB: ${parsed.data.user} -> ${parsed.data.target}`);
-=======
-    // Sync to Supabase after successful on-chain follow (async, don't block response)
-    syncFollowToSupabase(parsed.data.user, parsed.data.target)
-      .then(() => {
-        console.log(`✅ Synced follow to Supabase: ${parsed.data.user} -> ${parsed.data.target}`);
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
       })
       .catch((err: any) => {
-        console.error("❌ Failed to sync follow to Supabase:", err);
+        console.error("❌ Failed to sync follow to MongoDB:", err);
       });
     
     return respond(res, { success: true, data: { txHash: receipt?.hash } });
@@ -265,21 +285,14 @@ app.post("/api/unfollow", async (req, res) => {
     }
     
     const receipt = await unfollow(parsed.data.user, parsed.data.target);
-    
-<<<<<<< HEAD
+
     // Sync to MongoDB after successful on-chain unfollow (async, don't block response)
     syncUnfollowFromMongo(parsed.data.user, parsed.data.target)
       .then(() => {
         console.log(`✅ Synced unfollow from MongoDB: ${parsed.data.user} -> ${parsed.data.target}`);
-=======
-    // Sync to Supabase after successful on-chain unfollow (async, don't block response)
-    syncUnfollowFromSupabase(parsed.data.user, parsed.data.target)
-      .then(() => {
-        console.log(`✅ Synced unfollow from Supabase: ${parsed.data.user} -> ${parsed.data.target}`);
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
       })
       .catch((err: any) => {
-        console.error("❌ Failed to sync unfollow from Supabase:", err);
+        console.error("❌ Failed to sync unfollow from MongoDB:", err);
       });
     
     return respond(res, { success: true, data: { txHash: receipt?.hash } });
@@ -299,16 +312,14 @@ app.get("/api/following/:user", async (req, res) => {
     if (!userAddress || userAddress.length !== 42 || !userAddress.startsWith("0x")) {
       return respond(res, { success: false, error: "Invalid user address" });
     }
-    
-<<<<<<< HEAD
     // Try MongoDB first, fallback to on-chain
     let list: string[] = [];
     try {
       list = await getFollowingFromMongo(userAddress);
-    } catch (supabaseErr: any) {
-      console.error("MongoDB error (will try on-chain):", supabaseErr);
+    } catch (mongoErr: any) {
+      console.error("MongoDB error (will try on-chain):", mongoErr);
     }
-    
+
     if (list.length === 0) {
       // Fallback to on-chain if MongoDB is empty
       try {
@@ -316,23 +327,6 @@ app.get("/api/following/:user", async (req, res) => {
         // Sync on-chain data to MongoDB (async, don't wait)
         for (const address of list) {
           syncFollowToMongo(userAddress, address).catch(() => {});
-=======
-    // Try Supabase first, fallback to on-chain
-    let list: string[] = [];
-    try {
-      list = await getFollowingFromSupabase(userAddress);
-    } catch (supabaseErr: any) {
-      console.error("Supabase error (will try on-chain):", supabaseErr);
-    }
-    
-    if (list.length === 0) {
-      // Fallback to on-chain if Supabase is empty
-      try {
-        list = await getFollowing(userAddress);
-        // Sync on-chain data to Supabase (async, don't wait)
-        for (const address of list) {
-          syncFollowToSupabase(userAddress, address).catch(() => {});
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
         }
       } catch (onChainErr: any) {
         console.error("On-chain error:", onChainErr);
@@ -353,16 +347,14 @@ app.get("/api/followers/:user", async (req, res) => {
     if (!userAddress || userAddress.length !== 42 || !userAddress.startsWith("0x")) {
       return respond(res, { success: false, error: "Invalid user address" });
     }
-    
-<<<<<<< HEAD
     // Try MongoDB first, fallback to on-chain
     let list: string[] = [];
     try {
       list = await getFollowersFromMongo(userAddress);
-    } catch (supabaseErr: any) {
-      console.error("MongoDB error (will try on-chain):", supabaseErr);
+    } catch (mongoErr: any) {
+      console.error("MongoDB error (will try on-chain):", mongoErr);
     }
-    
+
     if (list.length === 0) {
       // Fallback to on-chain if MongoDB is empty
       try {
@@ -372,25 +364,6 @@ app.get("/api/followers/:user", async (req, res) => {
           console.log(`📦 Syncing ${list.length} on-chain follower relationships to MongoDB for ${userAddress.slice(0, 6)}...`);
           for (const address of list) {
             syncFollowToMongo(address, userAddress).catch(() => {});
-=======
-    // Try Supabase first, fallback to on-chain
-    let list: string[] = [];
-    try {
-      list = await getFollowersFromSupabase(userAddress);
-    } catch (supabaseErr: any) {
-      console.error("Supabase error (will try on-chain):", supabaseErr);
-    }
-    
-    if (list.length === 0) {
-      // Fallback to on-chain if Supabase is empty
-      try {
-        list = await getFollowers(userAddress);
-        // Sync on-chain data to Supabase (async, don't wait)
-        if (list.length > 0) {
-          console.log(`📦 Syncing ${list.length} on-chain follower relationships to Supabase for ${userAddress.slice(0, 6)}...`);
-          for (const address of list) {
-            syncFollowToSupabase(address, userAddress).catch(() => {});
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
           }
         }
       } catch (onChainErr: any) {
@@ -399,11 +372,7 @@ app.get("/api/followers/:user", async (req, res) => {
         list = [];
       }
     } else {
-<<<<<<< HEAD
       console.log(`✅ Found ${list.length} follower relationships in MongoDB for ${userAddress.slice(0, 6)}...`);
-=======
-      console.log(`✅ Found ${list.length} follower relationships in Supabase for ${userAddress.slice(0, 6)}...`);
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
     }
     return respond(res, { success: true, data: list });
   } catch (err: any) {
@@ -758,7 +727,7 @@ app.post("/api/upload", async (req, res) => {
   }
 });
 
-// New Supabase-based messaging endpoints
+// MongoDB-based messaging endpoints
 app.post("/api/message/send", async (req, res) => {
   const parsed = messageSchema.safeParse(req.body);
   if (!parsed.success) return respond(res, { success: false, error: parsed.error.message });

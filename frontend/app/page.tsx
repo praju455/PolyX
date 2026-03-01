@@ -255,7 +255,7 @@ export default function Home() {
                         PolyX is built with cutting-edge Web3 technologies to provide a seamless, secure, and scalable experience:
                       </p>
                       <div className="flex flex-wrap gap-3">
-                        {["Polygon Amoy", "IPFS/Pinata", "Next.js", "TypeScript", "Supabase", "RainbowKit", "Wagmi", "Ethers.js", "Framer Motion"].map((tech) => (
+                        {["Polygon Amoy", "IPFS/Pinata", "Next.js", "TypeScript", "MongoDB", "RainbowKit", "Wagmi", "Ethers.js", "Framer Motion"].map((tech) => (
                           <span
                             key={tech}
                             className="px-4 py-2 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 rounded-xl text-sm font-medium hover:scale-105 transition-transform"
@@ -541,7 +541,7 @@ export default function Home() {
                   PolyX is built with cutting-edge Web3 technologies to provide a seamless, secure, and scalable experience:
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  {["Polygon Amoy", "IPFS/Pinata", "Next.js", "TypeScript", "Supabase", "RainbowKit", "Wagmi", "Ethers.js", "Framer Motion"].map((tech) => (
+                  {["Polygon Amoy", "IPFS/Pinata", "Next.js", "TypeScript", "MongoDB", "RainbowKit", "Wagmi", "Ethers.js", "Framer Motion"].map((tech) => (
                     <span
                       key={tech}
                       className="px-4 py-2 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 rounded-xl text-sm font-medium hover:scale-105 transition-transform"

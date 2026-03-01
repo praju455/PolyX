@@ -65,11 +65,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 }
 
 export const api = {
-<<<<<<< HEAD
   feed: (tag?: string) => request<Post[]>(tag ? `/api/feed?tag=${encodeURIComponent(tag)}` : "/api/feed"),
-=======
-  feed: () => request<Post[]>("/api/feed"),
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
   post: (id: number) => request<Post>(`/api/post/${id}`),
   postsByAuthor: (author: string) => request<Post[]>(`/api/posts/by-author/${author}`),
   tweet: (user: string, text: string, mediaCid = "") =>
@@ -139,11 +135,7 @@ export const api = {
     }),
   following: (user: string) => request<string[]>(`/api/following/${user}`),
   followers: (user: string) => request<string[]>(`/api/followers/${user}`),
-<<<<<<< HEAD
   notifications: (user: string) => request<Array<{ type: "like" | "quote" | "comment" | "follow" | "mention"; from: string; postId?: number; timestamp: number }>>(`/api/notifications/${user}`),
-=======
-  notifications: (user: string) => request<Array<{ type: "like" | "quote" | "comment" | "follow"; from: string; postId?: number; timestamp: number }>>(`/api/notifications/${user}`),
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
   hasLiked: (postId: number, user: string) => request<{ liked: boolean }>(`/api/post/${postId}/liked/${user}`),
   hasRetweeted: (postId: number, user: string) => request<{ retweeted: boolean }>(`/api/post/${postId}/retweeted/${user}`),
   uploadToPinata: (filename: string, contentType: string, dataBase64: string) =>
@@ -180,7 +172,6 @@ export const api = {
   isBlocked: (user: string, other: string) => request<{ blocked: boolean }>(`/api/blocked/${user}/${other}`),
   getBlockedUsers: (user: string) => request<string[]>(`/api/blocked/${user}`),
   search: (query: string) => request<Profile[]>(`/api/search?q=${encodeURIComponent(query)}`),
-<<<<<<< HEAD
   searchPosts: (query: string) => request<Post[]>(`/api/search/posts?q=${encodeURIComponent(query)}`),
   trendingHashtags: () => request<Array<{ tag: string; count: number }>>("/api/hashtags/trending"),
   bookmark: (user: string, postId: number) =>
@@ -207,8 +198,6 @@ export const api = {
     }),
   getReactions: (postId: number) => request<Record<string, number>>(`/api/post/${postId}/reactions`),
   getUserReaction: (postId: number, user: string) => request<{ reactionType: string | null }>(`/api/post/${postId}/reaction/${user}`),
-=======
->>>>>>> d28ed297911d24f67d9b64a43ce466ac4b2996d8
   chatWithBot: (user: string, message: string) =>
     request<{ response: string }>("/api/chatbot/chat", {
       method: "POST",
